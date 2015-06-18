@@ -77,8 +77,8 @@ namespace CI_SearchAlgoritms
 
         private IEnumerable<Swap> RadomOrderActions()
         {
-            foreach (Swap s in randActions.RandomOrder(r))
-                yield return s;
+            foreach (Swap swap in randActions.RandomOrder(r))
+                yield return swap;
         }
         public int StepCount()
         {
