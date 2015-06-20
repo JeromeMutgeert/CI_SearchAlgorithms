@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace CI_SearchAlgoritms
 {
@@ -9,8 +10,8 @@ namespace CI_SearchAlgoritms
     {
         static void Main(string[] args)
         {
-            Norvig n = new Norvig(6);
-            n.Test();
+            //Norvig n = new Norvig(5);
+            //n.Test();
             Program p = new Program();
         }
 
@@ -19,13 +20,20 @@ namespace CI_SearchAlgoritms
             Norvig n = new Norvig(3);
             foreach (UnsolvedSudoku sudoku in LoadSudokus())
             {
-                
+                n.Pringting
+                bool solved = n.Solve(new NorvigSudoku(sudoku));
             }
         }
 
         private IEnumerable<UnsolvedSudoku> LoadSudokus()
         {
-            throw new NotImplementedException();
+            StreamReader sr = new StreamReader("sudokus.txt");
+            string[] sudokuStrings = sr.ReadToEnd().Split('\n');
+            sr.Close();
+            foreach (string sudoku in sudokuStrings)
+            {
+                yield return new UnsolvedSudoku(3, UnsolvedSudoku.AddSpaces(sudoku));
+            }
         }
     }
     
