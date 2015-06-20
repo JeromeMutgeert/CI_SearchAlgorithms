@@ -26,25 +26,38 @@ namespace CI_SearchAlgoritms
         int assigns;
         public Dictionary<string, string> solution;
 
-
+        public bool printing = false;
         //EDIT: Method added, (implementing SearchAlgorithm<string>).
-        public Dictionary<string,string> Solve(SearchProblem<string> problem)
+        public bool Solve(SearchProblem<string> problem)
         {
-            string sudoku = ((NorvigSudokuString)problem).GetString();
-            st = new Stopwatch();
-            assigns = 0;
-            st.Start();
+            UnsolvedSudoku sudoku = ((NorvigSudoku)problem).GetUnsolvedSudoku();
             
-            solution = search(parse_grid2(sudoku));
+            if (printing)
+            {
+                st = new Stopwatch();
+                assigns = 0;
+                st.Start();
+            }
+            
+            solution = search(parse_grid3(sudoku));
 
-            st.Stop();
-            Dictionary<string, string> info = new Dictionary<string, string>();
-            info["algorithm"] = "Norvig (c# Linq), N = " + N;
-            info["solved"] = solution == null ? "false" : "true";
-            info["time taken"] = st.ElapsedMilliseconds.ToString() + " ms";
-            info["assigns"] = assigns.ToString();
+            if (printing)
+            {
+                st.Stop();
+                Dictionary<string, string> info = new Dictionary<string, string>();
+                info["algorithm"] = "Norvig (c# Linq), N = " + N;
+                info["solved"] = solution == null ? "false" : "true";
+                info["time taken"] = st.ElapsedMilliseconds.ToString() + " ms";
+                info["assigns"] = assigns.ToString();
+            }
 
-            return info;
+            return solution == null;
+        }
+
+
+        internal void PrintInfo(Dictionary<string, string> info)
+        {
+            throw new NotImplementedException();
         }
 
         // Throughout this program we have:
@@ -155,7 +168,7 @@ namespace CI_SearchAlgoritms
         //EDIT: Edited into and redirected to parse_grid2:
         public Dictionary<string, string> parse_grid(string grid)
         {
-            return parse_grid2(String.Join(" ",(from sq in grid select sq.ToString())));
+            return parse_grid2(UnsolvedSudoku.AddSpaces(grid));
         }
 
         //EDIT: New method. The grid has to have its values split by spaces:
@@ -182,6 +195,26 @@ namespace CI_SearchAlgoritms
             }
             return values;
         }
+        // EDIT: method added to handle UnsolvedSudoku's.
+        public Dictionary<string, string> parse_grid3(UnsolvedSudoku sudoku)
+        {
+            var values = squares.ToDictionary(s => s, s => digits);
+
+            for (byte col = 0; col < N; col++)
+                for (byte row = 0; row < N; row++)
+                {
+                    byte val = sudoku.field[col, row];
+                    if (val != 0)
+                    {
+                        var d = "" + (char)val;
+                        var s = "" + rows.ToCharArray()[row] + cols.ToArray()[col];
+                        if (assign(values,s,d) == null) return null;
+                    }
+                }
+            return values;
+        }
+
+        //EDIT: New Method, 
 
         /*
          * def search(values):
@@ -516,23 +549,24 @@ namespace CI_SearchAlgoritms
             Console.WriteLine("Press enter to finish");
             Console.ReadLine();
         }
+
     }
 
     //EDIT: Extra (dummy) class to fit the interface.
-    public class NorvigSudokuString : SearchProblem<string>
+    public class NorvigSudoku : SearchProblem<string>
     {
-        private string sudoku;
+        private UnsolvedSudoku sudoku;
 
-        NorvigSudokuString(string sudoku)
+        public NorvigSudoku(UnsolvedSudoku sudoku)
         {
             this.sudoku = sudoku;
         }
-        public string GetString() 
+        public UnsolvedSudoku GetUnsolvedSudoku() 
         {
             return sudoku;
         }
         
-        public IEnumerator<string> Successors(string s)
+        public IEnumerable<string> Successors(string s)
         {
             throw new NotImplementedException();
         }
