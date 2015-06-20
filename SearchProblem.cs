@@ -7,7 +7,7 @@ namespace CI_SearchAlgoritms
 {
     interface SearchProblem<State>
     {
-        IEnumerator<State> Successors(State s);
+        IEnumerable<State> Successors(State s);
         int Heuristic(State s);
 
         bool IsGoal(State solution);

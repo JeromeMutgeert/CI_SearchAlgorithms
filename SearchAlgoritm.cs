@@ -7,6 +7,7 @@ namespace CI_SearchAlgoritms
 {
     interface SearchAlgorithm<State>
     {
-        Dictionary<string,string> Solve(SearchProblem<State> problem);
+        bool Printing { set; get; }
+        bool Solve(SearchProblem<State> problem);
     }
 }

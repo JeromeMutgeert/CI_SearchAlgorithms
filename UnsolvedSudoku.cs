@@ -9,6 +9,11 @@ namespace CI_SearchAlgoritms
     {
         public byte[,] field;
         public byte N;
+
+        public static string AddSpaces(string normalSudokuSting)
+        {
+            return String.Join(" ", (from d in normalSudokuSting select d.ToString()));
+        }
         
         public UnsolvedSudoku(byte N, string fieldString)
         {
