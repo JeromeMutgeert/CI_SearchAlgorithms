@@ -43,8 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ILS.cs" />
+    <Compile Include="LinqSudokuSolver.cs" />
+    <Compile Include="LocalSP_Sudoku.cs" />
+    <Compile Include="Norvig.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RRHillClimb.cs" />
+    <Compile Include="SearchAlgoritm.cs" />
+    <Compile Include="SearchProblem.cs" />
+    <Compile Include="UnsolvedSudoku.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
