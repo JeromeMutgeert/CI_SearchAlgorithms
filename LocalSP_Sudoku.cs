@@ -61,8 +61,8 @@ namespace CI_SearchAlgoritms
         {
             return new FullSudokuState(sudoku, r, Heuristic);
         }
-        
-        public IEnumerator<FullSudokuState> Successors(FullSudokuState s)
+
+        IEnumerable<FullSudokuState> SearchProblem<FullSudokuState>.Successors(FullSudokuState s)
         {
             foreach (Swap action in RadomOrderActions())
             {
@@ -77,8 +77,8 @@ namespace CI_SearchAlgoritms
 
         private IEnumerable<Swap> RadomOrderActions()
         {
-            foreach (Swap swap in randActions.RandomOrder(r))
-                yield return swap;
+            foreach (Swap s in randActions.RandomOrder(r))
+                yield return s;
         }
         public int StepCount()
         {
