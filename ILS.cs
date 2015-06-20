@@ -8,14 +8,12 @@ namespace CI_SearchAlgoritms
 {
     class ILS : SearchAlgorithm<FullSudokuState>
     {
-        public RRHillClimb hillClimber;
         int randSteps, totalSteps;
 
-        public ILS(int randSteps, int totalSteps)
+        public ILS(int totalSteps, int randSteps)
         {
             this.randSteps = randSteps;
             this.totalSteps = totalSteps;
-            hillClimber = new RRHillClimb();
         }
         Dictionary<string,string> SearchAlgorithm<FullSudokuState>.Solve(SearchProblem<FullSudokuState> problem)
         {
@@ -37,7 +35,7 @@ namespace CI_SearchAlgoritms
         }
         public FullSudokuState DoILS(LocalSP_Sudoku problem)
         {
-            FullSudokuState sol = hillClimber.Climb(problem, problem.GetRandomStartState());
+            FullSudokuState sol = RRHillClimb.Climb(problem, problem.GetRandomStartState());
             if (problem.IsGoal(sol)) return sol;
             FullSudokuState sol2 = RandomWalk(problem, sol);
 
@@ -45,7 +43,7 @@ namespace CI_SearchAlgoritms
             {
                 if (sol2.quality > sol.quality) sol = sol2;
                 sol2 = RandomWalk(problem, sol);
-                sol2 = hillClimber.Climb(problem, sol2);
+                sol2 = RRHillClimb.Climb(problem, sol2);
             } 
 
             if (sol2.quality > sol.quality) sol = sol2;
